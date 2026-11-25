@@ -1,0 +1,11 @@
+# Blank issues are disabled — pick a template.
+
+Thanks for helping. Two templates exist:
+
+- **Bug report** — wrong numbers, crashes, broken installs.
+- **Feature request** — new metric, target, or workflow.
+
+For security issues, see [SECURITY.md](../SECURITY.md) instead of opening an issue.
+
+For questions ("how do I evaluate a streaming endpoint?"), use
+[Discussions](https://github.com/Danta-Design/yardstick/discussions) once enabled.

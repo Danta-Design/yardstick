@@ -1,0 +1,53 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs:
+    name: docs sanity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required files exist
+        run: |
+          set -euo pipefail
+          for f in README.md LICENSE CONTRIBUTING.md CHANGELOG.md \
+                   docs/architecture.md docs/metrics.md docs/issues.md; do
+            test -s "$f" || { echo "missing or empty: $f"; exit 1; }
+          done
+          echo "documentation layout OK"
+
+      - name: Check for unresolved placeholders
+        run: |
+          set -euo pipefail
+          # Fails on the template placeholders that must not ship.
+          if grep -rn "<YOUR NAME>" --include="*.md" . ; then
+            echo "::warning::placeholder <YOUR NAME> still present"
+          fi
+
+  # TODO(EV-30): replace with the real matrix once packages/ exist.
+  #   lint   -> ruff + mypy (python), eslint + tsc (web)
+  #   test   -> pytest (python), vitest (web)
+  #   build  -> docker compose config
+  skeleton:
+    name: build (skeleton)
+    runs-on: ubuntu-latest
+    needs: docs
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder
+        run: |
+          echo "Skeleton CI is live."
+          echo "Real lint/test/build jobs land with the first package."
