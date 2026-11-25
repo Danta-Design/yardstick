@@ -1,0 +1,16 @@
+# Normalize all text to LF in the repository, regardless of contributor OS.
+* text=auto eol=lf
+
+# Keep binaries untouched.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+
+# Windows-only scripts, if any are ever added.
+*.bat text eol=crlf
+*.cmd text eol=crlf
