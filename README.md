@@ -64,31 +64,32 @@ See [`docs/architecture.md`](docs/architecture.md) for components, data model, a
 
 ## Quick start
 
-> Not runnable yet — this is the target interface for `v0.1.0`.
+> Early alpha. `run` works today for `http` and `python` targets with the
+> deterministic metrics. The judge, `compare`, and the CI action are next.
 
 ```bash
-pip install yardstick
+git clone https://github.com/Danta-Design/yardstick.git
+cd yardstick/packages/cli
+python -m pip install -e ".[dev]"
 
-yardstick run --config eval.yml          # evaluate, print report, write runs/<id>/
-yardstick compare runs/a runs/b          # per-case flip diff
-yardstick push runs/<id>                 # optional: persist to server
+yardstick run --config eval.yml      # print the report, write runs/<run_id>/report.json
+pytest -q                            # 27 tests, no network required
 ```
 
-A config looks roughly like this:
+A config looks like this:
 
 ```yaml
 dataset: examples/datasets/faq-50.jsonl
 target:
   type: http
   url: http://localhost:8000/chat
-metrics: [exact_match, judge]
-judge:
-  model: deepseek-chat
-  rubric: examples/rubrics/answer_quality.md
-  samples: 3
+  body:
+    question: "{input}"
+  output_path: answer
+metrics: [exact_match, token_f1]
 gate:
-  min_score: 0.82
-  max_regression: 0.02
+  min_score: 0.8
+  max_error_rate: 0.02
 ```
 
 ---

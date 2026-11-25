@@ -1,0 +1,50 @@
+{"case_key": "q001", "input": "星尘笔记免费版最多能建几个笔记本？", "expected": "3 个"}
+{"case_key": "q002", "input": "星尘笔记专业版每月多少钱？", "expected": "29 元"}
+{"case_key": "q003", "input": "星尘笔记团队版每人每月多少钱？", "expected": "19 元"}
+{"case_key": "q004", "input": "免费版单个文件最大上传多大？", "expected": "10 MB"}
+{"case_key": "q005", "input": "专业版单个文件最大上传多大？", "expected": "200 MB"}
+{"case_key": "q006", "input": "免费版总存储空间多大？", "expected": "1 GB"}
+{"case_key": "q007", "input": "专业版总存储空间多大？", "expected": "100 GB"}
+{"case_key": "q008", "input": "星尘笔记支持哪些操作系统？", "expected": "Windows、macOS、iOS、Android"}
+{"case_key": "q009", "input": "有没有网页版？", "expected": "有"}
+{"case_key": "q010", "input": "离线模式怎么开启？", "expected": "在设置里打开离线同步"}
+{"case_key": "q011", "input": "数据会同步到哪些设备？", "expected": "登录同一账号的所有设备"}
+{"case_key": "q012", "input": "一个账号最多能同时登录几台设备？", "expected": "5 台"}
+{"case_key": "q013", "input": "忘记密码怎么办？", "expected": "用绑定邮箱重置"}
+{"case_key": "q014", "input": "支持两步验证吗？", "expected": "支持"}
+{"case_key": "q015", "input": "笔记会自动保存在本地还是云端？", "expected": "本地和云端都会保存"}
+{"case_key": "q016", "input": "免费版有历史版本吗？", "expected": "保留 7 天"}
+{"case_key": "q017", "input": "专业版历史版本保留多久？", "expected": "180 天"}
+{"case_key": "q018", "input": "可以导出成什么格式？", "expected": "Markdown、PDF、HTML"}
+{"case_key": "q019", "input": "支持从印象笔记导入吗？", "expected": "支持"}
+{"case_key": "q020", "input": "导出时图片会一起导出吗？", "expected": "会"}
+{"case_key": "q021", "input": "支持 Markdown 语法吗？", "expected": "支持"}
+{"case_key": "q022", "input": "可以插入代码块吗？", "expected": "可以"}
+{"case_key": "q023", "input": "支持表格吗？", "expected": "支持"}
+{"case_key": "q024", "input": "能插入本地图片吗？", "expected": "能"}
+{"case_key": "q025", "input": "笔记标题最多多少字？", "expected": "100 字"}
+{"case_key": "q026", "input": "搜索支持全文检索吗？", "expected": "支持"}
+{"case_key": "q027", "input": "搜索能搜到图片里的文字吗？", "expected": "专业版支持"}
+{"case_key": "q028", "input": "可以给笔记加标签吗？", "expected": "可以"}
+{"case_key": "q029", "input": "支持多层文件夹吗？", "expected": "支持"}
+{"case_key": "q030", "input": "可以分享单篇笔记给朋友吗？", "expected": "可以生成链接"}
+{"case_key": "q031", "input": "分享链接可以设置密码吗？", "expected": "可以"}
+{"case_key": "q032", "input": "分享链接可以设置有效期吗？", "expected": "可以"}
+{"case_key": "q033", "input": "团队版最多支持多少人？", "expected": "50 人"}
+{"case_key": "q034", "input": "协同时能实时看到对方光标吗？", "expected": "能"}
+{"case_key": "q035", "input": "误删的笔记能恢复吗？", "expected": "30 天内可在回收站恢复"}
+{"case_key": "q036", "input": "回收站会占用存储空间吗？", "expected": "不会"}
+{"case_key": "q037", "input": "可以在笔记里插入待办清单吗？", "expected": "可以"}
+{"case_key": "q038", "input": "支持设置提醒时间吗？", "expected": "支持"}
+{"case_key": "q039", "input": "有没有夜间模式？", "expected": "有"}
+{"case_key": "q040", "input": "可以自定义字体大小吗？", "expected": "可以"}
+{"case_key": "q041", "input": "支持快捷键吗？", "expected": "支持"}
+{"case_key": "q042", "input": "会员到期后数据会被删除吗？", "expected": "不会，超出免费额度的部分只读"}
+{"case_key": "q043", "input": "可以开发票吗？", "expected": "可以，在账单页申请"}
+{"case_key": "q044", "input": "支持哪些支付方式？", "expected": "微信、支付宝、银行卡"}
+{"case_key": "q045", "input": "订阅可以随时取消吗？", "expected": "可以"}
+{"case_key": "q046", "input": "取消后还能用到什么时候？", "expected": "当前计费周期结束"}
+{"case_key": "q047", "input": "客服响应时间是多久？", "expected": "工作日 4 小时内"}
+{"case_key": "q048", "input": "客服邮箱是什么？", "expected": "support@stardust.example"}
+{"case_key": "q049", "input": "有 API 吗？", "expected": "团队版提供"}
+{"case_key": "q050", "input": "支持私有化部署吗？", "expected": "支持，需要联系销售"}

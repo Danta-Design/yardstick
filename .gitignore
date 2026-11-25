@@ -7,6 +7,11 @@ dist/
 .venv/
 venv/
 .pytest_cache/
+.pytest-tmp/
+.pytest-run*/
+pytest-cache-files-*/
+.tmp/
+packages/cli/_tmp/
 .ruff_cache/
 .mypy_cache/
 .coverage
