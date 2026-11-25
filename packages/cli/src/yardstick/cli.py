@@ -15,6 +15,7 @@ from rich.console import Console
 from . import __version__
 from .config import ConfigError, load_config
 from .datasets import DatasetError, load_dataset
+from .judge import Judge
 from .metrics import METRICS, UnknownMetricError
 from .report import render, write_report
 from .runner import Runner
@@ -49,18 +50,22 @@ def run_command(args: argparse.Namespace) -> int:
 
     try:
         config = load_config(args.config)
-        unknown = [metric for metric in config.metrics if metric not in METRICS]
+        allowed_metrics = set(METRICS) | {"judge"}
+        unknown = [metric for metric in config.metrics if metric not in allowed_metrics]
         if unknown:
             raise UnknownMetricError(f"unknown metric(s): {', '.join(unknown)}")
+        if "judge" in config.metrics and config.judge is None:
+            raise ConfigError("metrics includes 'judge' but there is no judge section")
         dataset = load_dataset(config.dataset)
         if args.limit is not None:
             dataset.cases = dataset.cases[: args.limit]
         target = build_target(config.target)
+        judge = Judge(config.judge) if config.judge is not None else None
     except (ConfigError, DatasetError, UnknownMetricError) as exc:
         console.print(f"[bold red]error[/bold red] {exc}")
         return 2
 
-    report = asyncio.run(Runner(config, dataset, target).run())
+    report = asyncio.run(Runner(config, dataset, target, judge).run())
     path = write_report(report, args.out)
     render(report, console)
     console.print(f"[dim]report: {path}[/dim]")

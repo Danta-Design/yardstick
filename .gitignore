@@ -33,6 +33,7 @@ dist/
 # Evaluation artifacts (should never be committed)
 runs/
 reports/
+.yardstick-cache/
 *.sqlite
 *.sqlite3
 cassettes/

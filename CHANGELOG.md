@@ -21,6 +21,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - JSON run reports under `runs/<run_id>/report.json`, plus a terminal summary.
 - `examples/datasets/faq-50.jsonl`: 50 cases against a fictional product FAQ.
 - 27 tests, including end-to-end runs against a fake target with no network.
+- LLM-as-judge metric: versioned rubric files, strict JSON contract with repair,
+  N-sample median, optional dual-model crossover with a `needs_review` flag.
+- Content-addressed judge cache keyed by model, rubric hash, prompt, and sample
+  index, so a repeated run costs nothing.
+- `examples/rubrics/answer_quality.md`: a starter rubric with 1/3/5 anchors.
+- Judge metadata (model, rubric hash, cache hits, review count) in every report.
+- 13 judge tests using an httpx mock transport; 40 tests total, still no network.
 
 ### Changed
 

@@ -58,6 +58,24 @@ class GateConfig(BaseModel):
     max_error_rate: float | None = Field(default=None, ge=0, le=1)
 
 
+class JudgeConfig(BaseModel):
+    """How to score answers that have no exact expected string."""
+
+    model_config = {"extra": "forbid"}
+
+    model: str
+    rubric: Path
+    base_url: str = "https://api.openai.com/v1"
+    api_key_env: str = "OPENAI_API_KEY"
+    samples: int = Field(default=3, ge=1, le=10)
+    temperature: float = Field(default=0.0, ge=0, le=2)
+    scale: int = Field(default=5, ge=2, le=10)
+    secondary_model: str | None = None
+    disagreement_threshold: int = Field(default=1, ge=0, le=10)
+    cache_dir: Path = Path(".yardstick-cache")
+    timeout_s: float = Field(default=60.0, gt=0)
+
+
 class Config(BaseModel):
     """A complete evaluation definition."""
 
@@ -68,6 +86,7 @@ class Config(BaseModel):
     target: TargetConfig
     metrics: list[str] = Field(default_factory=lambda: ["exact_match"])
     gate: GateConfig = Field(default_factory=GateConfig)
+    judge: JudgeConfig | None = None
     concurrency: int = Field(default=8, ge=1, le=64)
     retries: int = Field(default=2, ge=0, le=10)
 
@@ -93,5 +112,11 @@ def load_config(path: str | Path) -> Config:
 
     if not config.dataset.is_absolute():
         config.dataset = (config_path.parent / config.dataset).resolve()
+
+    if config.judge is not None:
+        if not config.judge.rubric.is_absolute():
+            config.judge.rubric = (config_path.parent / config.judge.rubric).resolve()
+        if not config.judge.cache_dir.is_absolute():
+            config.judge.cache_dir = (config_path.parent / config.judge.cache_dir).resolve()
 
     return config

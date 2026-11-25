@@ -64,8 +64,9 @@ See [`docs/architecture.md`](docs/architecture.md) for components, data model, a
 
 ## Quick start
 
-> Early alpha. `run` works today for `http` and `python` targets with the
-> deterministic metrics. The judge, `compare`, and the CI action are next.
+> Early alpha. `run` works today for `http` and `python` targets, deterministic
+> metrics, and an LLM judge with caching and dual-model cross-checking.
+> `compare` and the CI action are next.
 
 ```bash
 git clone https://github.com/Danta-Design/yardstick.git
@@ -73,7 +74,7 @@ cd yardstick/packages/cli
 python -m pip install -e ".[dev]"
 
 yardstick run --config eval.yml      # print the report, write runs/<run_id>/report.json
-pytest -q                            # 27 tests, no network required
+pytest -q                            # 40 tests, no network required
 ```
 
 A config looks like this:
@@ -86,7 +87,14 @@ target:
   body:
     question: "{input}"
   output_path: answer
-metrics: [exact_match, token_f1]
+metrics: [exact_match, judge]
+judge:
+  model: deepseek-chat
+  base_url: https://api.deepseek.com
+  api_key_env: DEEPSEEK_API_KEY
+  rubric: examples/rubrics/answer_quality.md
+  samples: 3          # median of three scorings, not a mean
+  secondary_model: gpt-4o-mini   # disagreement flags the case for review
 gate:
   min_score: 0.8
   max_error_rate: 0.02

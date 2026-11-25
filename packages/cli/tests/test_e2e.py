@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import json
 
+import httpx
 import pytest
 
 from yardstick.config import Config
 from yardstick.datasets import load_dataset
+from yardstick.judge import Judge
 from yardstick.runner import Runner
 from yardstick.targets import build_target
 
@@ -103,3 +105,40 @@ async def test_gate_failure_is_reported(tmp_path) -> None:
     failures = report.gate_failures()
     assert len(failures) == 1
     assert "min_score" in failures[0]
+
+
+@pytest.mark.asyncio
+async def test_judge_metric_end_to_end(tmp_path, monkeypatch) -> None:
+    monkeypatch.setenv("YARDSTICK_TEST_KEY", "test-key")
+    rubric = tmp_path / "rubric.md"
+    rubric.write_text(
+        "# Quality\n\n5 is perfect, 3 is partial, 1 is wrong. Fail on invented numbers.\n",
+        encoding="utf-8",
+    )
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        content = json.dumps({"score": 4, "reason": "mostly right"})
+        return httpx.Response(200, json={"choices": [{"message": {"content": content}}]})
+
+    dataset = _dataset(tmp_path, [{"case_key": "a", "input": "red", "expected": "RED"}])
+    config = _config(
+        dataset.path,
+        "tests.fixtures.fake_target:shout",
+        metrics=["exact_match", "judge"],
+        judge={
+            "model": "judge-a",
+            "rubric": rubric,
+            "api_key_env": "YARDSTICK_TEST_KEY",
+            "samples": 1,
+            "cache_dir": tmp_path / "cache",
+        },
+    )
+    judge = Judge(config.judge, transport=httpx.MockTransport(handler))
+
+    report = await Runner(config, dataset, build_target(config.target), judge).run()
+
+    assert report.metrics["exact_match"] == 1.0
+    assert report.metrics["judge"] == pytest.approx(0.75)
+    assert report.judge is not None
+    assert report.judge["model"] == "judge-a"
+    assert report.judge["judged_cases"] == 1

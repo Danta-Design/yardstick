@@ -22,6 +22,8 @@ class CaseResult:
     error: str | None
     latency_ms: float
     scores: dict[str, float] = field(default_factory=dict)
+    judge: dict[str, Any] | None = None
+    judge_error: str | None = None
 
     @property
     def ok(self) -> bool:
@@ -34,8 +36,10 @@ class CaseResult:
             "expected": self.case.expected,
             "output": self.output,
             "error": self.error,
+            "judge_error": self.judge_error,
             "latency_ms": round(self.latency_ms, 2),
             "scores": self.scores,
+            "judge": self.judge,
         }
 
 
@@ -53,6 +57,7 @@ class RunReport:
     error_rate: float
     results: list[CaseResult]
     gate: dict[str, Any]
+    judge: dict[str, Any] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -66,6 +71,7 @@ class RunReport:
             "metrics": self.metrics,
             "error_rate": round(self.error_rate, 4),
             "gate": self.gate,
+            "judge": self.judge,
             "cases": [result.to_dict() for result in self.results],
         }
 
@@ -121,6 +127,18 @@ def render(report: RunReport, console: Console | None = None) -> None:
         f"[dim]{len(report.results)} cases | {report.duration_s:.1f}s | "
         f"dataset {report.dataset['content_hash'][:12]}[/dim]"
     )
+    if report.judge:
+        judge = report.judge
+        cached = f"{judge['cache_hits']}/{judge['judged_cases']}"
+        console.print(
+            f"[dim]judge {judge['model']} | rubric {judge['rubric_hash'][:12]} | "
+            f"{judge['samples']} sample(s) | {cached} cached[/dim]"
+        )
+        if judge["needs_review"]:
+            flagged = judge["needs_review"]
+            console.print(
+                f"[bold yellow]{flagged} case(s) flagged for human review[/bold yellow]"
+            )
 
     failures = report.gate_failures()
     if failures:
@@ -145,3 +163,7 @@ def render(report: RunReport, console: Console | None = None) -> None:
             console.print(f"  - [cyan]{result.case.case_key}[/cyan] {result.case.input}")
             console.print(f"    expected: {result.case.expected}")
             console.print(f"    actual:   {result.output}")
+            if result.judge:
+                console.print(
+                    f"    judge:    {result.judge['raw_score']} — {result.judge['reason']}"
+                )
