@@ -28,6 +28,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `examples/rubrics/answer_quality.md`: a starter rubric with 1/3/5 anchors.
 - Judge metadata (model, rubric hash, cache hits, review count) in every report.
 - 13 judge tests using an httpx mock transport; 40 tests total, still no network.
+- `compare` subcommand: per-case flips, per-metric delta, and a percentile
+  bootstrap 95% confidence interval. When the interval crosses zero the verdict
+  is reported as "no significant change" rather than a fake improvement.
+- Dataset-hash check on comparison, plus lists of cases present in only one run.
+- `--fail-on-regression` for using comparison as a CI gate.
+- 9 compare tests; 49 tests total.
 
 ### Changed
 

@@ -64,9 +64,9 @@ See [`docs/architecture.md`](docs/architecture.md) for components, data model, a
 
 ## Quick start
 
-> Early alpha. `run` works today for `http` and `python` targets, deterministic
-> metrics, and an LLM judge with caching and dual-model cross-checking.
-> `compare` and the CI action are next.
+> Early alpha. `run` and `compare` work today for `http` and `python` targets,
+> deterministic metrics, and an LLM judge with caching and dual-model
+> cross-checking. The CI action is next.
 
 ```bash
 git clone https://github.com/Danta-Design/yardstick.git
@@ -74,7 +74,8 @@ cd yardstick/packages/cli
 python -m pip install -e ".[dev]"
 
 yardstick run --config eval.yml      # print the report, write runs/<run_id>/report.json
-pytest -q                            # 40 tests, no network required
+yardstick compare runs/<a> runs/<b>  # per-case flips, delta, 95% CI
+pytest -q                            # 49 tests, no network required
 ```
 
 A config looks like this:
