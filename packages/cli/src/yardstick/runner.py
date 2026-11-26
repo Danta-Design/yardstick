@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import time
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from .config import Config
 from .datasets import Dataset
@@ -31,7 +31,7 @@ class Runner:
         self._judge = judge
 
     async def run(self) -> RunReport:
-        started_at = datetime.now(timezone.utc)
+        started_at = datetime.now(UTC)
         began = time.perf_counter()
 
         semaphore = asyncio.Semaphore(self._config.concurrency)
